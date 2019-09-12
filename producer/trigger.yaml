@@ -1,0 +1,10 @@
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: trigger-producer
+spec:
+  subscriber:
+    ref:
+     apiVersion: eventing.knative.dev/v1alpha1
+     kind: Channel
+     name: producer-channel

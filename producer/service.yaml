@@ -1,0 +1,13 @@
+# Service pointing at the previous Deployment. This will be the target for event
+# consumption.
+  kind: Service
+  apiVersion: v1
+  metadata:
+    name: event-producer
+  spec:
+    selector:
+      app: event-producer
+    ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

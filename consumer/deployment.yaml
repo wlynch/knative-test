@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels: &labels
+      app: event-consumer
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      containers:
+        - name: event-consumer
+          image: github.com/wlynch/knative-test/consumer

@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels: &labels
+      app: event-producer
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      containers:
+        - name: event-producer
+          image: github.com/wlynch/knative-test/producer

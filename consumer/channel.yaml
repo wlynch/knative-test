@@ -1,0 +1,8 @@
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Channel
+metadata:
+  name: consumer-channel
+spec:
+  channelTemplate:
+    apiVersion: messaging.knative.dev/v1alpha1
+￼     kind: InMemoryChannel
