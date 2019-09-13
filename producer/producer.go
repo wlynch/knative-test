@@ -1,19 +1,28 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/google/go-github/github"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	log.Print("Hello world received a request.")
-	target := os.Getenv("TARGET")
-	if target == "" {
-		target = "World"
+
+	client := github.NewClient(nil)
+	pr, resp, err := client.PullRequests.Get(r.Context(), "tektoncd", "triggers", 1)
+	if err != nil {
+		http.Error(w, err.Error(), resp.StatusCode)
 	}
-	fmt.Fprintf(w, `{"msg": "Hello %s!\n"}`, target)
+
+	enc := json.NewEncoder(w)
+	if err := enc.Encode(pr); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func main() {
