@@ -1,0 +1,13 @@
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: trigger-judge
+spec:
+  filter:
+    attributes:
+      expression: ce.outcome == "success"
+  subscriber:
+    ref:
+      apiVersion: v1
+      kind: Service
+      name: tekton
