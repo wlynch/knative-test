@@ -11,22 +11,38 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	log.Print("Hello world received a request.")
+	log.Print("Producer received a request.")
 
-	client := github.NewClient(nil)
-	pr, resp, err := client.PullRequests.Get(r.Context(), "tektoncd", "triggers", 1)
-	if err != nil {
-		http.Error(w, err.Error(), resp.StatusCode)
+	payload := make(map[string]interface{})
+	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+		log.Print(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
+	client := github.NewClient(nil)
+	pr, resp, err := client.Repositories.GetCommit(r.Context(), "tektoncd", "triggers", "master")
+	if err != nil {
+		log.Print(err)
+		http.Error(w, err.Error(), resp.StatusCode)
+		return
+	}
+	payload["pr"] = pr
+
+	payload["build"] = true
+
+	log.Printf("out: %+v", payload)
+
 	enc := json.NewEncoder(w)
-	if err := enc.Encode(pr); err != nil {
+	if err := enc.Encode(payload); err != nil {
+		log.Print(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 }
 
 func main() {
-	log.Print("Hello world sample started.")
+	log.Print("Producer started.")
 
 	http.HandleFunc("/", handler)
 
