@@ -21,13 +21,21 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	client := github.NewClient(nil)
-	pr, resp, err := client.Repositories.GetCommit(r.Context(), "tektoncd", "triggers", "master")
+	commit, resp, err := client.Repositories.GetCommit(r.Context(), "tektoncd", "triggers", "master")
 	if err != nil {
 		log.Print(err)
 		http.Error(w, err.Error(), resp.StatusCode)
 		return
 	}
-	payload["pr"] = pr
+	payload["commit"] = commit
+
+	repo, resp, err := client.Repositories.Get(r.Context(), "tektoncd", "triggers")
+	if err != nil {
+		log.Print(err)
+		http.Error(w, err.Error(), resp.StatusCode)
+		return
+	}
+	payload["repo"] = repo
 
 	payload["build"] = true
 

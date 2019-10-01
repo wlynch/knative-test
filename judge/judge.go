@@ -11,7 +11,7 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	log.Print("Hello world received a request.")
+	log.Print("Judge received a request.")
 
 	client := github.NewClient(nil)
 	pr, resp, err := client.PullRequests.Get(r.Context(), "tektoncd", "triggers", 1)
@@ -26,7 +26,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	log.Print("Hello world sample started.")
+	log.Print("Judge started.")
 
 	http.HandleFunc("/", handler)
 
