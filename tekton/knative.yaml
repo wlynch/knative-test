@@ -4,10 +4,11 @@ metadata:
   name: tekton-trigger
 spec:
   broker: default
-  filter:
-    expression: ce.build
   subscriber:
     ref:
-      apiVersion: tekton.dev/v1alpha1
-      kind: EventListener
-      name: getting-started-listener
+      #apiVersion: tekton.dev/v1alpha1
+      #kind: EventListener
+      #name: getting-started-listener
+      apiVersion: v1
+      kind: Service
+      name: getting-started-listener-nsd2n

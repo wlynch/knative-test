@@ -1,0 +1,14 @@
+apiVersion: sources.eventing.knative.dev/v1alpha1
+kind: CronJobSource
+metadata:
+  name: test-cronjob-source
+spec:
+  schedule: "* * * * *"
+  data: '{"message": "Hello world!"}'
+  sink:
+    #apiVersion: eventing.knative.dev/v1alpha1
+    #kind: Broker
+    # name: default
+    apiVersion: v1
+    kind: Service
+    name: event-producer

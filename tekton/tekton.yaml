@@ -58,7 +58,6 @@ spec:
       metadata:
         name: getting-started-pipeline-run-$(uid)
       spec:
-        serviceAccount: tekton-triggers-admin
         pipelineRef:
           name: getting-started-pipeline
         resources:
@@ -82,7 +81,6 @@ kind: EventListener
 metadata:
   name: getting-started-listener
 spec:
-  serviceAccountName: task-admin
   triggers:
     - binding:
         name: getting-started-pipelinebinding

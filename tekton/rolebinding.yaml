@@ -2,15 +2,33 @@ apiVersion: rbac.authorization.k8s.io/v1
 # This role binding allows "jane" to read pods in the "default" namespace.
 kind: RoleBinding
 metadata:
-  name: read-eventlistener
+  name: eventlistener
   namespace: default
 subjects:
 - kind: ServiceAccount
   namespace: knative-eventing
   name: eventing-controller  # Name is case sensitive
+subjects:
+- kind: ServiceAccount
+  namespace: default
+  name: default
 roleRef:
-  kind: Role #this must be Role or ClusterRole
-  name: tekton-eventlistener-read # this must match the name of the Role or ClusterRole you wish to bind to
+  kind: ClusterRole #this must be Role or ClusterRole
+  name: tekton-triggers-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: eventlistener-pipeline
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  namespace: default
+  name: default
+roleRef:
+  kind: ClusterRole #this must be Role or ClusterRole
+  name: tekton-pipelines-admin
   apiGroup: rbac.authorization.k8s.io
 ---
 kind: Role

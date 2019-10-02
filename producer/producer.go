@@ -20,6 +20,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Printf("in: %+v", payload)
+
 	client := github.NewClient(nil)
 	commit, resp, err := client.Repositories.GetCommit(r.Context(), "tektoncd", "triggers", "master")
 	if err != nil {
@@ -37,9 +39,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 	payload["repo"] = repo
 
-	payload["build"] = true
+	payload["build"] = "true"
 
-	log.Printf("out: %+v", payload)
+	//log.Printf("out: %+v", payload)
 
 	enc := json.NewEncoder(w)
 	if err := enc.Encode(payload); err != nil {

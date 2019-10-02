@@ -11,4 +11,5 @@ spec:
     ref:
       apiVersion: v1
       kind: Service
-      name: event-consumer
+      #name: event-consumer
+      name: getting-started-listener-nsd2n
